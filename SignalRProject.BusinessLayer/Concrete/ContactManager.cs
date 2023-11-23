@@ -13,6 +13,12 @@ namespace SignalRProject.BusinessLayer.Concrete
     {
        
         private readonly IContactDal _contactDal;
+
+        public ContactManager(IContactDal contactDal)
+        {
+            _contactDal = contactDal;
+        }
+
         public void Tadd(Contact entity)
         {
             _contactDal.add(entity);

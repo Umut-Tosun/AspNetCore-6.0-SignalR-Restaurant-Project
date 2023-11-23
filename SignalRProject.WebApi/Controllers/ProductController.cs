@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SignalRProject.BusinessLayer.Abstract;
+using SignalRProject.DataAccessLayer.Concrete;
 using SignalRProject.DtoLayer.ProductDto;
 using SignalRProject.EntityLayer.Entities;
 
@@ -11,16 +14,35 @@ namespace SignalRProject.WebApi.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _ProductService;
+        private readonly IMapper _mapper;
 
-        public ProductController(IProductService ProductService)
+        public ProductController(IProductService ProductService,IMapper mapper)
         {
             _ProductService = ProductService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult ProductList()
         {
             var values = _ProductService.TGetListAll();
+            return Ok(values);
+        }
+        [HttpGet("ProductListWithCategory")]
+        public IActionResult ProductListWithCategory()
+        {
+            var context = new Context();
+            var values = context.products.Include(x => x.Category).Select(y => new ResultProductWithCategory
+            {
+                ProductDescription = y.ProductDescription,
+                ProductName = y.ProductName,
+                CategoryName = y.Category.CategoryName,
+                ProductId = y.ProductId,
+                ProductImageUrl = y.ProductImageUrl,
+                ProductPrice = y.ProductPrice,
+                ProductStatus = y.ProductStatus
+            }).ToList();
+          
             return Ok(values);
         }
         [HttpPost]

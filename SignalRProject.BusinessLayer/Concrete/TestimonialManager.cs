@@ -12,6 +12,12 @@ namespace SignalRProject.BusinessLayer.Concrete
     public class TestimonialManager : ITestimonialService
     {
         private readonly ITestimonialDal _testimonialDal;
+
+        public TestimonialManager(ITestimonialDal testimonialDal)
+        {
+            _testimonialDal = testimonialDal;
+        }
+
         public void Tadd(Testimonial entity)
         {
            _testimonialDal.add(entity);

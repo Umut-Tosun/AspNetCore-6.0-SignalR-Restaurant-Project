@@ -12,6 +12,12 @@ namespace SignalRProject.BusinessLayer.Concrete
     public class SocialMediaService : ISocialMediaService
     {
         private readonly ISocialMediaDal _socialMediaDal;
+
+        public SocialMediaService(ISocialMediaDal socialMediaDal)
+        {
+            _socialMediaDal = socialMediaDal;
+        }
+
         public void Tadd(SocialMedia entity)
         {
             _socialMediaDal.add(entity);

@@ -3,9 +3,12 @@ using SignalRProject.BusinessLayer.Concrete;
 using SignalRProject.DataAccessLayer.Abstract;
 using SignalRProject.DataAccessLayer.Concrete;
 using SignalRProject.DataAccessLayer.EntityFramework;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddDbContext<Context>();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddScoped<IAboutService, AboutManager>();
 builder.Services.AddScoped<IAboutDal, EfAboutDal>();
@@ -29,7 +32,7 @@ builder.Services.AddScoped<IDiscountService, DiscountManager>();
 builder.Services.AddScoped<IFeatureDal, EfFeatureDal>();
 
 builder.Services.AddScoped<IProductService, ProductManager>();
-builder.Services.AddScoped<ISocialMediaDal, EfSocialMediaDal>();
+builder.Services.AddScoped<IProductDal, EfProductDal>();
 
 builder.Services.AddScoped<ITestimonialService, TestimonialManager>();
 builder.Services.AddScoped<ITestimonialDal, EfTestimonialDal>();

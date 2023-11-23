@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SignalRProject.DataAccessLayer.Concrete;
 
@@ -11,9 +12,10 @@ using SignalRProject.DataAccessLayer.Concrete;
 namespace SignalRProject.DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20231123100012_mig_add_relation_product_category")]
+    partial class mig_add_relation_product_category
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,6 +92,9 @@ namespace SignalRProject.DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"), 1L, 1);
 
+                    b.Property<int?>("CategoryId1")
+                        .HasColumnType("int");
+
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -98,6 +103,8 @@ namespace SignalRProject.DataAccessLayer.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("CategoryId");
+
+                    b.HasIndex("CategoryId1");
 
                     b.ToTable("categories");
                 });
@@ -273,10 +280,17 @@ namespace SignalRProject.DataAccessLayer.Migrations
                     b.ToTable("testimonials");
                 });
 
+            modelBuilder.Entity("SignalRProject.EntityLayer.Entities.Category", b =>
+                {
+                    b.HasOne("SignalRProject.EntityLayer.Entities.Category", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("CategoryId1");
+                });
+
             modelBuilder.Entity("SignalRProject.EntityLayer.Entities.Product", b =>
                 {
                     b.HasOne("SignalRProject.EntityLayer.Entities.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -286,7 +300,7 @@ namespace SignalRProject.DataAccessLayer.Migrations
 
             modelBuilder.Entity("SignalRProject.EntityLayer.Entities.Category", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Categories");
                 });
 #pragma warning restore 612, 618
         }

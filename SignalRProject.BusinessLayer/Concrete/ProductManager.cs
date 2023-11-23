@@ -12,6 +12,12 @@ namespace SignalRProject.BusinessLayer.Concrete
     public class ProductManager : IProductService
     {
         private readonly IProductDal _productDal;
+
+        public ProductManager(IProductDal productDal)
+        {
+            _productDal = productDal;
+        }
+
         public void Tadd(Product entity)
         {
             _productDal.add(entity);
@@ -30,6 +36,11 @@ namespace SignalRProject.BusinessLayer.Concrete
         public List<Product> TGetListAll()
         {
             return _productDal.GetListAll();
+        }
+
+        public List<Product> TProductsWithCategories()
+        {
+            return _productDal.ProductsWithCategories();
         }
 
         public void Tupdate(Product entity)

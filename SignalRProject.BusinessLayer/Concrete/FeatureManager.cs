@@ -12,6 +12,12 @@ namespace SignalRProject.BusinessLayer.Concrete
     public class FeatureManager : IGenericService<Feature>
     {
         private readonly IFeatureDal _featureDal;
+
+        public FeatureManager(IFeatureDal featureDal)
+        {
+            _featureDal = featureDal;
+        }
+
         public void Tadd(Feature entity)
         {
            _featureDal.add(entity);
