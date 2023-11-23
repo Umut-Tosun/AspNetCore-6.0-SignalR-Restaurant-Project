@@ -11,11 +11,8 @@ namespace SignalRProject.BusinessLayer.Concrete
 {
     public class ContactManager : IContactService
     {
-        void add(T entity);
-        void delete(T entity);
-        void update(T entity);
-        T GetById(int id);
-        List<T> GetListAll(); IContactDal _contactDal;
+       
+        private readonly IContactDal _contactDal;
         public void Tadd(Contact entity)
         {
             _contactDal.add(entity);

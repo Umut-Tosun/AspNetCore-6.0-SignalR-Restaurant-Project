@@ -1,4 +1,6 @@
-﻿using SignalRProject.DataAccessLayer.Repositires;
+﻿using SignalRProject.DataAccessLayer.Abstract;
+using SignalRProject.DataAccessLayer.Concrete;
+using SignalRProject.DataAccessLayer.Repositires;
 using SignalRProject.EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,10 @@ using System.Threading.Tasks;
 
 namespace SignalRProject.DataAccessLayer.EntityFramework
 {
-    public class EfCategoryDal : GenericRepository<Contact>,IContactDal
+    public class EfCategoryDal : GenericRepository<Category>, ICategoryDal
     {
+        public EfCategoryDal(Context context) : base(context)
+        {
+        }
     }
 }
