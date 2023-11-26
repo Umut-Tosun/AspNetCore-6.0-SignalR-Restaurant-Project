@@ -1,0 +1,23 @@
+﻿@model SignalRProject.WebUI.Dtos.CategoryDtos.CreateCategoryDto
+@{
+    ViewData["Title"] = "CreateCategory";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<form method="post">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Yeni Kategori Oluştur</div>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label for="squareInput">Kategori Adı</label>
+                <input type="text" class="form-control input-square" asp-for="CategoryName" id="squareInput" placeholder="Kategori Adını Giriniz">
+            </div>
+        </div>
+        <div class="card-action">
+            <button type="submit" class="btn btn-success">Oluştur</button>
+            <a href="/Category/Index/" class="btn btn-danger">İptal et</a>
+        </div>
+</form>
+

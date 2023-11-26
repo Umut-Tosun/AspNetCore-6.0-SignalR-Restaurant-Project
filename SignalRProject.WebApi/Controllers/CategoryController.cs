@@ -35,11 +35,15 @@ namespace SignalRProject.WebApi.Controllers
             _CategoryService.Tadd(Category);
             return Ok("Kategori başarıyla eklendi.");
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteCategory(int id)
         {
             var value = _CategoryService.TGetById(id);
-            _CategoryService.Tdelete(value);
+
+            if (value.CategoryStatus) value.CategoryStatus = false;
+            else value.CategoryStatus = true;
+
+            _CategoryService.Tupdate(value);
             return Ok("Kategori silindi.");
         }
         [HttpPut]
@@ -54,7 +58,7 @@ namespace SignalRProject.WebApi.Controllers
             _CategoryService.Tupdate(Category);
             return Ok("Kategori güncellendi.");
         }
-        [HttpGet("GetCategory")]
+        [HttpGet("{id}")]
         public IActionResult GetCategory(int id)
         {
             var value = _CategoryService.TGetById(id);

@@ -1,8 +1,54 @@
-﻿
+﻿@model List<SignalRProject.WebUI.Dtos.CategoryDtos.ResultCategoryDto>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
-<h1>Burası Index</h1>
+<h4 class="page-title">Kategori Yönetim Sayfası</h4>
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Kategori Listesi</div>
+    </div>
+    <div class="card-body">
+
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Kategori Adı</th>
+                    <th scope="col">Kategori Durum</th>
+                    <th scope="col">Durum Değiştir</th>
+                    <th scope="col">Bilgileri Düzenle</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CategoryId</td>
+                        <td>@item.CategoryName</td>
+                       
+                        @if(item.CategoryStatus == true)
+                        {
+                            <td>Aktif</td>
+                            <td>@Html.ActionLink("Pasif Yap", "DeleteCategory", new { id = item.CategoryId }, new { @class = "btn btn-danger", onclick = "return confirm('Kategori Pasife Alınacaktır Onaylıyor Musunuz  ?')" })</td>
+                        }
+                        else
+                        {
+                            <td>Pasif</td>
+                            <td>@Html.ActionLink("Aktif Yap", "DeleteCategory", new { id = item.CategoryId }, new { @class = "btn btn-success", onclick = "return confirm('Kategori Aktif Edilecektir Onaylıyor Musunuz  ?')" })</td>
+                        }
+
+                        <td><a href="/Category/UpdateCategory/@item.CategoryId" class="btn btn-outline-primary">Güncelle</a></td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a href="/Category/CreateCategory/" class="btn btn-outline-success">Yeni Kategori Oluştur</a>
+
+    </div>
+</div>
+
 

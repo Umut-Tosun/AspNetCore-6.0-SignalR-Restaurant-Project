@@ -1,0 +1,27 @@
+﻿@model SignalRProject.WebUI.Dtos.CategoryDtos.UpdateCategoryDto
+@{
+    ViewData["Title"] = "UpdateCategory";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<form method="post">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Kategori Bilgilerini Düzenle</div>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <input type="text" hidden asp-for="CategoryId" >
+                <label for="squareInput">Kategori Adı</label>
+                <input type="text" class="form-control input-square" asp-for="CategoryName" id="squareInput" placeholder="Kategori Adını Giriniz">
+            </div>
+        </div>
+        <div class="card-action">
+            <!--<button type="submit" class="btn btn-success">Güncelle</button>-->
+            <button type="submit" class="btn btn-success">Değişiklikleri Kaydet</button>
+            <a href="/Category/Index/" class="btn btn-danger">İptal et</a>
+        </div>
+    </div>
+</form>
+
+
