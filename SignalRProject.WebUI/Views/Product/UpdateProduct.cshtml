@@ -1,0 +1,76 @@
+﻿
+@model UpdateProductDto
+@{
+    ViewData["Title"] = "UpdateProduct";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+
+<form method="post">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Ürün Bilgilerini Düzenle</div>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="text" hidden class="form-control input-square" asp-for="ProductId" placeholder="Ürün Adını Giriniz">
+                        <label for="squareInput">Ürün Adı</label>
+                        <input type="text" class="form-control input-square" asp-for="ProductName" placeholder="Ürün Adını Giriniz">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="squareInput">Ürün Açıklaması</label>
+                        <textarea type="number" class="form-control input-square" asp-for="ProductDescription" placeholder="Ürün Açıklaması Giriniz"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="squareInput">Ürün Kategorisi</label>
+                        @Html.DropDownListFor(x=>x.CategoryId,(List<SelectListItem>)ViewBag.v,new {@class="form-control"})
+                    </div>
+                    <div class="col-md-6">
+                        <label for="squareInput">Ürün Fiyatı</label>
+                        <input type="number" class="form-control input-square" asp-for="ProductPrice" placeholder="Ürün Adını Giriniz">
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label for="squareInput">Ürün Görsel</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="file" class="form-control" id="FileUrl" name="FileUrl" accept="image/*" onchange="showImagePreview(this)">
+                    </div>
+                    <div class="col-md-6">
+                        <img src="@Model.ProductImageUrl" name="ProductImageUrl" id="output" style="max-width: 50%; height: auto; object-fit: contain;">
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="card-action">
+            <button type="submit" class="btn btn-success">Bilgileri Kaydet</button>
+            <a href="/Product/Index/" class="btn btn-danger">İptal et</a>
+
+        </div>
+    </div>
+
+</form>
+
+<script>
+    function showImagePreview(input) {
+        var file = input.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('output').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+

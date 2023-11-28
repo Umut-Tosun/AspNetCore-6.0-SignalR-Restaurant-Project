@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SignalRProject.DtoLayer.ProductDto
+﻿namespace SignalRProject.WebUI.Dtos.ProductDtos
 {
     public class UpdateProductDto
     {
@@ -15,5 +9,6 @@ namespace SignalRProject.DtoLayer.ProductDto
         public Decimal ProductPrice { get; set; }
         public string ProductImageUrl { get; set; }
         public int CategoryId { get; set; }
+
     }
 }

@@ -13,21 +13,22 @@ namespace SignalRProject.WebApi.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IProductService _ProductService;
+        private readonly IProductService _productService;
         private readonly IMapper _mapper;
 
-        public ProductController(IProductService ProductService,IMapper mapper)
+        public ProductController(IProductService productService, IMapper mapper)
         {
-            _ProductService = ProductService;
+            _productService = productService;
             _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult ProductList()
         {
-            var values = _ProductService.TGetListAll();
-            return Ok(values);
+            var value = _mapper.Map<List<ResultProductDto>>(_productService.TGetListAll());
+            return Ok(value);
         }
+
         [HttpGet("ProductListWithCategory")]
         public IActionResult ProductListWithCategory()
         {
@@ -35,59 +36,61 @@ namespace SignalRProject.WebApi.Controllers
             var values = context.products.Include(x => x.Category).Select(y => new ResultProductWithCategory
             {
                 ProductDescription = y.ProductDescription,
-                ProductName = y.ProductName,
-                CategoryName = y.Category.CategoryName,
-                ProductId = y.ProductId,
                 ProductImageUrl = y.ProductImageUrl,
                 ProductPrice = y.ProductPrice,
-                ProductStatus = y.ProductStatus
-            }).ToList();
-          
-            return Ok(values);
+                ProductId = y.ProductId,
+                ProductName = y.ProductName,
+                ProductStatus = y.ProductStatus,
+                CategoryName = y.Category.CategoryName
+            });
+            return Ok(values.ToList());
         }
+
         [HttpPost]
         public IActionResult CreateProduct(CreateProductDto createProductDto)
         {
-            Product Product = new Product()
+            _productService.Tadd(new Product()
             {
                 ProductDescription = createProductDto.ProductDescription,
                 ProductImageUrl = createProductDto.ProductImageUrl,
-                ProductName = createProductDto.ProductName,
                 ProductPrice = createProductDto.ProductPrice,
+                ProductName = createProductDto.ProductName,
                 ProductStatus = createProductDto.ProductStatus,
-
-            };
-            _ProductService.Tadd(Product);
-            return Ok("Ürün kısmı başarıyla eklendi.");
+                CategoryId = createProductDto.CategoryId
+            });
+            return Ok("Ürün Bilgisi Eklendi");
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteProduct(int id)
         {
-            var value = _ProductService.TGetById(id);
-            _ProductService.Tdelete(value);
-            return Ok("Ürün alanı silindi.");
+            var value = _productService.TGetById(id);
+
+            if (value.ProductStatus) value.ProductStatus = false;
+            else value.ProductStatus = true;
+
+            _productService.Tupdate(value);
+            return Ok("Ürün Bilgisi Silindi");
+        }
+        [HttpGet("{id}")]
+        public IActionResult GetProduct(int id)
+        {
+            var value = _productService.TGetById(id);
+            return Ok(value);
         }
         [HttpPut]
         public IActionResult UpdateProduct(UpdateProductDto updateProductDto)
         {
-            Product Product = new Product()
+            _productService.Tupdate(new Product()
             {
-                ProductId = updateProductDto.ProductId,
                 ProductDescription = updateProductDto.ProductDescription,
                 ProductImageUrl = updateProductDto.ProductImageUrl,
-                ProductName = updateProductDto.ProductName,
                 ProductPrice = updateProductDto.ProductPrice,
+                ProductName = updateProductDto.ProductName,
                 ProductStatus = updateProductDto.ProductStatus,
-
-            };
-            _ProductService.Tupdate(Product);
-            return Ok("Ürün alanı güncellendi.");
-        }
-        [HttpGet("GetProduct")]
-        public IActionResult GetProduct(int id)
-        {
-            var value = _ProductService.TGetById(id);
-            return Ok(value);
+                ProductId = updateProductDto.ProductId,
+                CategoryId = updateProductDto.CategoryId
+            });
+            return Ok("Ürün Bilgisi Güncellendi");
         }
     }
 }

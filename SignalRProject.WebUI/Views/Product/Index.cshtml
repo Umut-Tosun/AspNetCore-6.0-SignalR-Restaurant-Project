@@ -1,0 +1,55 @@
+﻿@model List<ResultProductDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<h4 class="page-title">Ürün Yönetim Sayfası</h4>
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Ürün Listesi</div>
+    </div>
+    <div class="card-body">
+
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Ürün Adı</th>
+                    <th scope="col">Fiyat (Adet)</th>
+                    <th scope="col">Kategori</th>
+                    <th scope="col">Durum</th>
+                    <th scope="col">Durum Değiştir</th>
+                    <th scope="col">Bilgileri Düzenle</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProductId</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.ProductPrice</td>
+                        <td>@item.CategoryName</td>
+                        @if (item.ProductStatus == true)
+                        {
+                            <td>Aktif</td>
+                            <td>@Html.ActionLink("Pasif Yap", "DeleteProduct", new { id = item.ProductId }, new { @class = "btn btn-danger", onclick = "return confirm('Ürün Pasife Alınacaktır Onaylıyor Musunuz  ?')" })</td>
+                        }
+                        else
+                        {
+                            <td>Pasif</td>
+                            <td>@Html.ActionLink("Aktif Yap", "DeleteProduct", new { id = item.ProductId }, new { @class = "btn btn-success", onclick = "return confirm('Ürün Aktif Edilecektir Onaylıyor Musunuz  ?')" })</td>
+                        }
+
+                        <td><a href="/Product/UpdateProduct/@item.ProductId" class="btn btn-outline-primary">Güncelle</a></td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a href="/Product/CreateProduct/" class="btn btn-outline-success">Yeni Ürün Oluştur</a>
+
+    </div>
+</div>
+

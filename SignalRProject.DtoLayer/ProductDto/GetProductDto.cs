@@ -14,5 +14,6 @@ namespace SignalRProject.DtoLayer.ProductDto
         public string ProductDescription { get; set; }
         public Decimal ProductPrice { get; set; }
         public string ProductImageUrl { get; set; }
+        public int CategoryId { get; set; }
     }
 }
