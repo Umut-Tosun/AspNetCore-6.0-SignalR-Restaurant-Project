@@ -23,4 +23,8 @@
     <ProjectReference Include="..\SignalRProject.EntityLayer\SignalRProject.EntityLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="lib\" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,58 @@
+﻿@model UpdateAboutDto
+@{
+    ViewData["Title"] = "UpdateAbout";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<h1>Hakkımda Bilgilerini Düzenle</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Kategori Bilgilerini Düzenle</div>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <input type="text" hidden asp-for="AboutId">
+                <label for="squareInput">Hakkında Başlık</label>
+                <input type="text" class="form-control input-square" asp-for="AboutTitle" id="squareInput" >
+                <label for="squareInput">Hakkında Açıklaması</label>
+                <input type="text" class="form-control input-square" asp-for="AboutDescription" id="squareInput" >
+                <div class="form-group">
+                    <label for="squareInput">Hakkında Görsel</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="file" class="form-control" id="FileUrl" name="FileUrl" accept="image/*" onchange="showImagePreview(this)">
+                        </div>
+                        <div class="col-md-6">
+                            <img src="@Model.AboutImageUrl" name="AboutImageUrl" id="output" style="max-width: 50%; height: auto; object-fit: contain;">
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="card-action">
+            <!--<button type="submit" class="btn btn-success">Güncelle</button>-->
+            <button type="submit" class="btn btn-success">Değişiklikleri Kaydet</button>
+            <a href="/Category/Index/" class="btn btn-danger">İptal et</a>
+        </div>
+    </div>
+</form>
+
+<script>
+    function showImagePreview(input) {
+        var file = input.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('output').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
+
+

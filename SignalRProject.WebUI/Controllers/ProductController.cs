@@ -6,6 +6,9 @@ using SignalRProject.WebUI.Dtos.CategoryDtos;
 using SignalRProject.WebUI.Dtos.ProductDtos;
 using SignalRProject.WebUI.Methods;
 using System.Text;
+using Newtonsoft.Json.Linq;
+using System.Net;
+using System.Xml;
 
 namespace SignalRProject.WebUI.Controllers
 {
@@ -18,8 +21,10 @@ namespace SignalRProject.WebUI.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
+
         public async Task<IActionResult> Index()
         {
+        
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("https://localhost:7174/api/Product/ProductListWithCategory");
             if (responseMessage.IsSuccessStatusCode)
@@ -49,7 +54,7 @@ namespace SignalRProject.WebUI.Controllers
                 ViewBag.categoryList = categoryList;
             }
 
-           createProductDto.ProductImageUrl = "https://i.hizliresim.com/l7zchhj.png";
+            createProductDto.ProductImageUrl = "https://i.hizliresim.com/l7zchhj.png";
 
             return View(createProductDto);
         }
@@ -108,15 +113,25 @@ namespace SignalRProject.WebUI.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> UpdateProduct(UpdateProductDto updateProductDto,IFormFile FileUrl)
+        public async Task<IActionResult> UpdateProduct(UpdateProductDto updateProductDto, IFormFile FileUrl)
         {
-            if (updateProductDto.ProductImageUrl == null) updateProductDto.ProductImageUrl = "https://i.hizliresim.com/l7zchhj.png";
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync($"https://localhost:7174/api/Product/{updateProductDto.ProductId}");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jsonDataGet = await responseMessage.Content.ReadAsStringAsync();
+                var values = JsonConvert.DeserializeObject<UpdateProductDto>(jsonDataGet);
+
+                if (FileUrl != null) updateProductDto.ProductImageUrl = FileService.CreateToIFormFile(FileUrl);
+                else updateProductDto.ProductImageUrl = values.ProductImageUrl;
+            }
+
 
             updateProductDto.ProductStatus = true;
-            var client = _httpClientFactory.CreateClient();
+
             var jsonData = JsonConvert.SerializeObject(updateProductDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7174/api/Product/", stringContent);
+            responseMessage = await client.PutAsync("https://localhost:7174/api/Product/", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
